@@ -14,8 +14,7 @@ dist/
 jspm_packages/
 bower_components/
 
-# TypeScript
-*.ts
+
 
 # WebStorm project files
 .idea/

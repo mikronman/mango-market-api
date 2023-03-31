@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 
 // Import endpoints
-const userRouter = require('./routes/user')
+const userRouter = require('./users/user')
 
 const app = express()
 

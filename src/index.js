@@ -21,6 +21,7 @@ const getUsers = (request, response) => {
 app
   .route('/users').get(getUsers)
 
-app.listen(process.env.PORT || 8080, () => {
-  console.log(`Server listening`)
-})
+  const PORT = process.env.PORT || 8080;
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });

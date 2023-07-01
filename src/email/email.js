@@ -1,41 +1,34 @@
 const express = require('express');
 const router = express.Router();
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 
-// POST /email/send - Send email
 const sendEmail = (request, response) => {
   const { name, email, message } = request.body;
 
-  // Create a transporter object to send emails
-  const transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-      user: process.env.EMAIL_USERNAME,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
+  // Set SendGrid API Key
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-  // Define the email options
-  const mailOptions = {
-    from: email, // Using the user-entered email as the "from" field
-    to: 'mkleczkajr@gmail.com', // Your designated email address
-    subject: 'New Message from Website', // Subject of the email
-    text: `Name: ${name}\n\nMessage: ${message}`, // Email content including name and message
+  const msg = {
+    to: 'mkleczkajr@gmail.com', // Your email where you want to receive emails
+    from: 'mkleczkajr@gmail.com', // Your verified sender
+    subject: 'New Message from a Mango Customer!',
+    text: `Name: ${name}\n\nEmail: ${email}\n\nMessage: ${message}`,
   };
 
-  // Send the email
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Error sending email:', error);
-      response.status(500).json({ error: 'Failed to send email' });
-    } else {
-      console.log('Email sent:', info.response);
+  sgMail
+    .send(msg)
+    .then(() => {
       response.json({ message: 'Email sent successfully' });
-    }
-  });
+    })
+    .catch((error) => {
+      console.error('Error sending email:', error);
+      if (error.response && error.response.body && error.response.body.errors) {
+        console.log(error.response.body.errors);
+      }
+      response.status(500).json({ error: 'Failed to send email' });
+    });
 };
 
-// Define the route
 router.post('/send', sendEmail);
 
 module.exports = router;

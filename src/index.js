@@ -12,7 +12,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: ['http://localhost:4200', 'https://mango-market-frontend.herokuapp.com', 'https://experiencemango.com'], // Replace with the actual URLs of your localhost and remote host
+    origin: [
+      'http://localhost:4200', 
+      'https://mango-market-frontend.herokuapp.com', 
+      'https://experiencemango.com',
+      'https://www.experiencemango.com'],
     optionsSuccessStatus: 200 // Some legacy browsers (e.g., IE11) choke on status 204
   })
 );
